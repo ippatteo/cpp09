@@ -3,7 +3,7 @@
 #include <iostream>
 #include <iomanip>
 
-// Funzione ausiliaria per calcolare il tempo trascorso in microsecondi
+//micro secondi (secondi + micro) micro è solo la parte frazionaria
 double getTimeElapsed(struct timeval start, struct timeval end)
 {
     long seconds = end.tv_sec - start.tv_sec;
@@ -18,36 +18,29 @@ int main(int argc, char **argv)
         std::cerr << "Errore: Fornire una sequenza di numeri come argomenti." << std::endl;
         return 1;
     }
-
     try
     {
-        // Creare l'oggetto PmergeMe e riempire i container dagli argomenti
+        // crea l'oggetto PmergeMe e riempe
         std::deque<int> emptyDeque;
         std::vector<int> emptyVector;
         PmergeMe sorter(emptyDeque, emptyVector);
         sorter.fullContainers(argv);
-
-        // Controllare che non ci siano duplicati
+        // controllo dup
         if (!sorter.checkDuplicates())
         {
-            throw std::runtime_error("I numeri duplicati non sono ammessi.");
+            throw std::runtime_error("no duplicates allowed");
         }
-
-        // Stampare lo stato iniziale dei container
-        std::cout << "Before: ";
+        // stampa
+        std::cout << "before: ";
         sorter.printVectorContainer();
-
-        // Prendere il tempo e ordinare il vector
+        // prendere il tempo e ordinare il vector
         struct timeval startVec, endVec;
         gettimeofday(&startVec, NULL);
-        
         std::vector<int> sortedVector = sorter.mergeVector(sorter.getVectorContainer());
-        
         gettimeofday(&endVec, NULL);
         double timeVec = getTimeElapsed(startVec, endVec);
-
-        // Stampare il vector ordinato
-        std::cout << "After:  ";
+        // stampa il vector ordinato
+        std::cout << "vector:  ";
         for (size_t i = 0; i < sortedVector.size(); ++i)
         {
             std::cout << sortedVector[i];
@@ -55,22 +48,20 @@ int main(int argc, char **argv)
                 std::cout << " ";
         }
         std::cout << std::endl;
-
-        // Stampare il tempo impiegato per il vector
-        std::cout << "Time to process a range of " << sortedVector.size()
+        // tempo
+        std::cout << "time to process a range of " << sortedVector.size()
                   << " elements with std::vector: " << std::fixed << std::setprecision(5) 
-                  << timeVec << " us" << std::endl;
+                  << timeVec << " microseconds" << std::endl;
 
-        // Prendere il tempo e ordinare il deque
+        // deque
         struct timeval startDeq, endDeq;
         gettimeofday(&startDeq, NULL);
-        
         std::deque<int> sortedDeque = sorter.mergeDeque(sorter.getDequeContainer());
-        
         gettimeofday(&endDeq, NULL);
         double timeDeq = getTimeElapsed(startDeq, endDeq);
 
-        // Stampare il deque ordinato
+        // stampa
+		std::cout << "vector:  ";
         for (size_t i = 0; i < sortedDeque.size(); ++i)
         {
             std::cout << sortedDeque[i];
@@ -79,10 +70,10 @@ int main(int argc, char **argv)
         }
         std::cout << std::endl;
 
-        // Stampare il tempo impiegato per il deque
-        std::cout << "Time to process a range of " << sortedDeque.size()
+        // tempo
+        std::cout << "time to process a range of " << sortedDeque.size()
                   << " elements with std::deque:  " << std::fixed << std::setprecision(5) 
-                  << timeDeq << " us" << std::endl;
+                  << timeDeq << " microseconds" << std::endl;
     }
     catch (const std::exception& e)
     {
