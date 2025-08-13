@@ -12,6 +12,7 @@
 #include <iomanip>
 #include <ctime>
 #include <cstddef>
+#include <climits>
 
 
 class PmergeMe
@@ -27,7 +28,7 @@ class PmergeMe
 		static size_t jacobsthalNumber(unsigned int k);
 		std::vector<int> mergeVector(std::vector<int> vec);
 		std::deque<int> mergeDeque(std::deque<int> deq);
-		bool checkDuplicates();
+		int checkDuplicates();
 		void printVectorContainer() const;
 		void printDequeContainer() const;
 		const std::vector<int>& getVectorContainer() const;
